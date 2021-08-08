@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="blue_container">
+        <div class="rounded_heading">
+            {% if category %}
+                <h5>{{ category }}</h5>
+            {% elif listing_user %}
+                <h5>Listings by <strong>{{ listing_user }}</strong></h5>
+            {% else %}
+                <h5>Active Listings</h5>    
+            {% endif %}
+        </div>
+        <br>
+   
+    
+        {% for listing in listings %}
+            <div class="card mb-3" id="index_card">        
+                <div class="row g-0">
+                    <div class="col-lg-3" id="index_image">
+                        <a href="{% url 'listing' listing.id %}">
+                            <img src="{{ listing.image }}" alt="No Image" style="max-height: 330px; max-width: 240px;">
+                        </a>
+                    </div>
+
+                    <div class="col-lg-9">
+                        <div class="card-body" style="padding-left:70px">
+                            <h5 class="card-title">{{ listing.title }}</h5>
+                            <p class="card-text">{{ listing.description }}</p>
+                            <p class="card-text"><small class="text-muted">Listed on {{ listing.date }}</small></p>                      
+                            <p>Current Bid: <strong>${{ listing.bid }}</strong> </p> 
+                            <p>click <a href="{% url 'listing' listing.id %}">here</a> to view listing.</p>
+                        </div>                    
+                    </div> 
+
+                </div>       
+            </div>
+        {% empty %}
+            <h5>No Listings at The Moment.</h5>
+        {% endfor %}
+    </div>
+
+
+
+
+{% endblock %}

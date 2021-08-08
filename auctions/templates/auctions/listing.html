@@ -1,0 +1,78 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="beige_container">
+        
+        <div class="listing_heading">        
+            <h5>{{ listing.title }}</h5>
+        </div>
+        <br>
+
+        <div class="container" >
+            <div class="listing_card">       
+                <div class="clearfix">
+                    <div  class="row">
+                        <div class="col-lg-5 col-sm-8">
+                            <a href="{{ listing.image }}">
+                                <img src="{{ listing.image }}"  alt="No Image" class="col-sm-5 col-md-6" style="max-width: 550px; max-height: 660px" >
+                            </a>
+                        </div>
+                        <div class="col-lg-7 col-sm-4">
+                            <br>
+                            <h5>Info:</h5> 
+                            <li>Listed by: <a href="{% url 'user_listings' listing.user.id %}">{{ listing.user }}</a></li>
+                            <li>Category: <a href="{% url 'category' listing.category.title %}">{{ listing.category }}</a></li>
+                            <li>Listing posted on: <strong>{{ listing.date }}</strong></li>
+                            <li>Bidding ends: <strong>{{ listing.end_date }}</strong></li>  
+                        </div>
+                    </div>               
+                    <br>
+                    <p>{{ listing.description }}</p>
+
+                </div>
+            </div>
+        </div>
+    
+
+
+
+        <br><br>
+
+        <div class="container">
+            {% if bid_count == 0 %}
+                <p>Starting bid: <strong>${{ listing.bid }}</strong></p>
+                <p>Be the first to bid on this item!</p>
+                {% if user.is_authenticated %}
+                    <form action="{% url 'bid' listing.id user.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="bid">
+                        <input type="submit">
+                    </form>
+                {% else %}
+                    Please <a href="{% url 'login' %}">log in</a> to bid on this listing.
+                {% endif %}          
+            {% else %}
+                <p>Current Bid:</p> 
+                <p><strong>${{ listing.bid }}</strong></p>
+                <p>({{ bid_count }}) bid/s. Top bid held by <strong>{{ top_bid_user }}</strong></p>
+                {% if user.is_authenticated %}
+                    <form action="{% url 'bid' listing.id user.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="bid">
+                        <input type="submit">
+                    </form>
+                {% else %}
+                    Please <a href="{% url 'login' %}">log in</a> to bid on this listing.
+                {% endif %}
+            {% endif %}
+
+            <br><br>
+            <p><a href="{% url 'index' %}">Back to listings.</a></p>
+        </div>
+
+      
+    </div>
+    
+
+
+{% endblock %}

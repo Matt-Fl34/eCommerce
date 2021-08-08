@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div class="container">    
+        <div class="rounded_heading">
+        <h5>Create a New Listing</h5>
+        </div>
+    
+    
+        <div>
+            <form action="{% url 'new_listing' user.id %}" method="POST">
+                {% csrf_token %}
+                <p>Category</p>
+               <p>
+                    <select name="category">
+                        {% for category in categories %}
+                            <option>{{ category }}</option>
+                        {% endfor %}
+                    </select>      
+               </p>   
+                <p><input type="text" name="title" placeholder="Title" required="True"></p> 
+                <p><textarea name="description" rows="4" cols="50" placeholder="Description" required="True"></textarea></p>
+                <p>Starting Bid</p>
+                <p><input type="number" name="bid" required="True" step="0.01" min="0"></p>
+                <p>End Date</p>
+                <p><input type="date" name="end_date" required="True"></p>
+                <p>Link To Image (optional)</p>
+                <p><input type="url" name="image"></p>
+                <p><input type="submit"></p>               
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}
